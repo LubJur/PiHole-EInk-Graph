@@ -28,4 +28,5 @@ PiHole graph on a Waveshare 2.13" E-Ink display
 7. Open *PiHole_EInk_Graph.py* and write your PiHole **IP address** between the quotation marks on line **8** and your **password** on line **11**
 8. Run *PiHole_EInk_Graph.py* with `python3 PiHole_EInk_Graph.py`
     * note: PiHole must have the graph already displayed on the web UI for it to show on the display
+    * Raspberry Pi might reboot at first start, after the reboot just start the program again
 9. If you want to exit the program you can press **Ctrl + C** which clears the E-Ink display and closes the application
