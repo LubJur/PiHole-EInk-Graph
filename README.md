@@ -1,6 +1,13 @@
 # PiHole-EInk-Graph
 PiHole graph on a Waveshare 2.13" E-Ink display
 
+## Images
+### Finished build
+![](demo_images\RaspberryPi_finished.jpg)
+
+### .bmp displayed image
+![](demo_images\example_image.bmp)
+
 ## Technologies
 * Python 3.8.7
 * matplotlib 3.0.2
