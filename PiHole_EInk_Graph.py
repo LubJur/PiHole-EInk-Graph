@@ -37,6 +37,7 @@ def make_graph(x_keys, y_values):
     plt.figure(figsize=(1.911417, 0.9334646), dpi = 126, frameon = False)  # display size in inches (width, height) and DPI
     plt.tick_params(axis = "y", which = "both", right = False, width = 0.5, labelsize = 6)
     plt.tick_params(axis = "x", which = "both", top = False, bottom = False, labelbottom = False)
+    plt.yticks(fontsize = 5.5)
     plt.box(False)
     plt.title("Domains", size = "x-small")
     plt.plot(x_keys, y_values, color = "k", linewidth = 0.005)
