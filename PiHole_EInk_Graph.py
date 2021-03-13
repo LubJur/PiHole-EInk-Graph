@@ -15,19 +15,22 @@ pihole.refresh()
 epd = epd2in13_V2.EPD()
 epd.init(epd.FULL_UPDATE)
 
-def make_graph():
+def get_data():
     domains = pihole.getGraphData()["domains"]  # options: domains or ads
     x_keys = domains.keys()
     x_keys = [*x_keys]
     y_values = domains.values()
     y_values = [*y_values]
+    return x_keys, y_values
 
+def make_graph(x_keys, y_values):
     plt.figure(figsize=(1.911417, 0.9334646), dpi = 126, frameon = False)  # display size in inches (width, height) and DPI
     plt.tick_params(axis = "y", which = "both", right = False, width = 0.5, labelsize = 6)
     plt.tick_params(axis = "x", which = "both", top = False, bottom = False, labelbottom = False)
+    plt.yticks(fontsize = 5.5)
     plt.box(False)
     plt.title("Domains", size = "x-small")
-    plt.plot(x_keys, y_values, color = "k", linewidth = 0.5)
+    plt.plot(x_keys, y_values, color = "k", linewidth = 0.005)
 
     plt.savefig('line_plot.png', transparent = True, bbox_inches = "tight", pad_inches = 0)  
 
@@ -42,11 +45,17 @@ def show():
     image1.paste(bmp, (0, 0))
     epd.display(epd.getbuffer(image1))
 
+get_data()
+first_value = y_values[0]
+
 try:
     while True:
-        print("Refreshed")
-        make_graph()
-        show()
+        get_data()
+        if first_value != y_values[0]:
+            make_graph(x_keys, y_values)
+            show()
+            print("Refreshed")
+            first_value = y_values[0]
         time.sleep(300)  # 900s = 15 min
 except KeyboardInterrupt:
     print("KeyboardInterrupt")
