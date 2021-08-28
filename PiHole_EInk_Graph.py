@@ -15,34 +15,21 @@ except OSError:
     print("This IP does not have a PiHole running")
     quit()
 
-image = Image.new('1', (epd.height, epd.width), 255)  # 255: clear the frame    
-draw = ImageDraw.Draw(image)
-
 epd = epd2in13_V2.EPD()
 epd.init(epd.FULL_UPDATE)
 
+image = Image.new('1', (epd.height, epd.width), 255)  # 255: clear the frame
+draw = ImageDraw.Draw(image)
+
+y_values = 0
 
 def get_data():
+    pihole.refresh()
     domains = pihole.getGraphData()["domains"]  # options: domains or ads
     values = [*domains.values()]
     del(domains)
+    print(values) 
     return values
-
-def make_graph(x_keys, y_values):
-    plt.figure(figsize=(1.911417, 0.9334646), dpi = 126, frameon = False)  # display size in inches (width, height) and DPI
-    plt.tick_params(axis = "y", which = "both", right = False, width = 0.5, labelsize = 6)
-    plt.tick_params(axis = "x", which = "both", top = False, bottom = False, labelbottom = False)
-    plt.yticks(fontsize = 5.5)
-    plt.box(False)
-    plt.title("Domains", size = "x-small")
-    plt.plot(x_keys, y_values, color = "k", linewidth = 0.005)
-    plt.savefig('line_plot.png', transparent = True, bbox_inches = "tight", pad_inches = 0)  
-    plt.close("all")
-    plt.clf()
-    img = Image.open("line_plot.png")
-    img = img.convert('1')   
-    img = img.resize((250, 122))  # display resolution (width, height), used when creating the .bmp
-    img.save("line_plot.bmp") 
 
 def bar_graph(x1, y1, x2, y2, values):
     list_of_y = []
@@ -67,6 +54,7 @@ def bar_graph(x1, y1, x2, y2, values):
         # draws lines from bottom to the point
         draw.line([list_of_x[i],list_of_y[i] ,list_of_x[i], y2], width=1)
 
+    epd.display(epd.getbuffer(image))
 
 def line_graph(x1, y1, x2, y2, values):
     # beginning is the same as bar_graph
@@ -86,17 +74,20 @@ def line_graph(x1, y1, x2, y2, values):
 def show():
     image = Image.new('1', (epd.height, epd.width), 255)  # 255: clear the frame
     epd.display(epd.getbuffer(image))
+    print("som v show")
 
-get_data()
+y_values = get_data()
+first_values = get_data()
 
 try:
-    bar_graph(25,5,245,120,values)
-    show()
+    bar_graph(25,5,245,120,get_data())
+    print("Som tu 1")
+    #show()
     while True:
-        get_data()
-        if first_values != y_values:
-            bar_graph(25,5,245,120,values)
-            show()
+        if first_values != get_data():
+            print("Som tu 2")
+            bar_graph(25,5,245,120,get_data())
+            #show()
             first_values = y_values
         del(y_values)
         time.sleep(300)  # 300s = 5 min
