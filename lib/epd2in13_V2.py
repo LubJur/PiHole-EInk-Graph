@@ -29,8 +29,8 @@
 
 
 import logging
-import epdconfig
-#from . import epdconfig
+#import epdconfig
+from . import epdconfig
 import numpy as np
 
 # Display resolution
